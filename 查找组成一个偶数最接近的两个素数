@@ -1,0 +1,53 @@
+题目描述
+任意一个偶数（大于2）都可以由2个素数组成，组成偶数的2个素数有很多种情况，本题目要求输出组成指定偶数的两个素数差值最小的素数对
+输入描述:
+输入一个偶数
+
+输出描述:
+输出两个素数
+
+示例1
+输入
+复制
+20
+输出
+复制
+7
+13
+
+#include <iostream>
+using namespace std;
+
+bool isprime(int n)
+{
+    int i = 0;
+    for(i = 3; i * i <= n; i += 2)
+    {
+        if(n % i == 0)
+            break;
+    }
+    if(i * i > n)
+        return true;
+    else
+        return false;
+}
+
+int main()
+{
+    int num = 0;
+    while(cin >> num)
+    {
+        int mid = num / 2;
+        if (mid % 2 == 0) ++mid;
+        while(mid < num)
+        {
+            if (isprime(mid) && isprime(num - mid))
+            {
+                cout << num - mid << endl << mid << endl;
+                break;
+            }
+            mid += 2;
+        }
+    }
+    return 0;
+}
