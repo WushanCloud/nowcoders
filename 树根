@@ -1,0 +1,20 @@
+给定一个非负整数 num，反复将各个位上的数字相加，直到结果为一位数。
+
+class Solution {
+public:
+    int addDigits(int n) {
+        while(n/10 != 0)
+        {
+            long long sum = 0;
+            while (n)
+            {
+                sum += n % 10;
+                n /= 10;
+            }
+            n = sum;
+        }
+        return n;
+    }
+};
+
+
