@@ -1,0 +1,117 @@
+链接：https://www.nowcoder.com/questionTerminal/82424d93369649b98720743c25edc6ce
+来源：牛客网
+
+小喵们很喜欢把自己装进容器里的（例如碗），但是要是碗的周长比喵的身长还短，它们就进不去了。
+
+现在告诉你它们的身长，和碗的半径，请判断一下能否到碗里去。
+
+输入描述:
+输入有多组数据。
+
+每组数据包含两个整数n (1≤n≤2^128) 和r (1≤r≤2^128)，分别代表喵的身长和碗的半径。
+
+圆周率使用3.14。
+
+
+输出描述:
+对应每一组数据，如果喵能装进碗里就输出“Yes”；否则输出“No”。
+示例1
+输入
+6 1<br/>7 1<br/>9876543210 1234567890
+输出
+Yes<br/>No<br/>No
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+// 如果s1大于s2 返回false
+bool compare(const string& s1, const string& s2)
+{
+    if (s1.size() > s2.size())
+        return false;
+    else if (s1.size() < s2.size())
+        return true;
+    for (int i = 0; i < s1.size(); i++)
+    {
+        if (s1[i] > s2[i])
+            return false;
+        else if (s1[i] < s2[i])
+            return true;
+    }
+    return true;
+}
+
+void cul(string& s, int n)
+{
+    reverse(s.begin(), s.end());
+
+    int tmp = 0;
+    for (size_t i = 0; i < s.size(); i++)
+    {
+        tmp = (s[i] - '0') * n + tmp;
+        s[i] = tmp % 10 + '0';
+        tmp /= 10;
+    }
+    if (tmp)
+    {
+        s += tmp + '0';
+    }
+
+    reverse(s.begin(), s.end());
+}
+
+void Add(string& s1, string& s2)
+{
+    reverse(s1.begin(), s1.end());
+    reverse(s2.begin(), s2.end());
+    s2.resize(s1.size(), '0');
+    int tmp = 0;
+    for (size_t i = 0; i < s1.size(); i++)
+    {
+        tmp = (s1[i] - '0') + (s2[i] - '0') + tmp;
+        s1[i] = tmp % 10 + '0';
+        tmp /= 10;
+    }
+    if (tmp)
+    {
+        s1 += tmp + '0';
+    }
+
+    reverse(s2.begin(), s2.end());
+    reverse(s1.begin(), s1.end());
+}
+
+string func(string& s1, string& s2)
+{
+    if (compare(s1, s2))
+        return "Yes";
+    string s3 = s2;
+    cul(s2, 6);
+    if (compare(s1, s2))
+        return "Yes";
+    s1 += '0';
+    s2 += '0';
+    cul(s3, 2);
+    Add(s2, s3);
+    if (compare(s1, s2))
+        return "Yes";
+    s1 += '0';
+    s2 += '0';
+    cul(s3, 4);
+    Add(s2, s3);
+    if (compare(s1, s2))
+        return "Yes";
+    return "No";
+}
+
+int main()
+{
+    string s1, s2;
+    while (cin >> s1 >> s2)
+    {
+        cout << func(s1, s2) << endl;
+    }
+    return 0;
+}
