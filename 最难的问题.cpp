@@ -46,3 +46,26 @@ int main()
     }
     return 0;
 }
+
+
+// write your code here cpp
+#include <iostream>
+#include <string>
+
+int main()
+{
+    std::string y = "VWXYZABCDEFGHIJKLMNOPQRSTU";
+    std::string s;
+    while (std::getline(std::cin, s))
+    {
+        size_t n = 0;
+        for (size_t i = 0; i < s.size(); i++)
+        {
+            if (s[i] == ' ')
+                continue;
+            s[i] = y[s[i] - 'A'];
+        }
+        std::cout << s << std::endl;
+    }
+    return 0;
+}
