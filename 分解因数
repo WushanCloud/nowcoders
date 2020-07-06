@@ -1,0 +1,63 @@
+链接：https://www.nowcoder.com/questionTerminal/0f6976af36324f8bab1ea61e9e826ef5
+来源：牛客网
+
+所谓因子分解，就是把给定的正整数a，分解成若干个素数的乘积，即 a = a1 × a2 × a3 × ... × an,并且 1 < a1 ≤ a2 ≤ a3 ≤ ... ≤ an。其中a1、a2、...、an均为素数。 先给出一个整数a，请输出分解后的因子。
+
+输入描述:
+输入包含多组数据，每组数据包含一个正整数a（2≤a≤1000000）。
+
+
+输出描述:
+对应每组数据，以“a = a1 * a2 * a3...”的形式输出因式分解后的结果。
+
+#include <iostream>
+#include <vector>
+#include <string>
+
+void fun(std::vector<int>& v, int n)
+{
+    v.push_back(2);
+    for (int i = 3; i < n; i += 2)
+    {
+        int tmp = 1;
+        for (int j = 2; j * j < i; j++)
+        {
+            if (i % j == 0)
+            {
+                tmp = 0;
+                break;
+            }
+        }
+        if (tmp)
+        {
+            v.push_back(i);
+        }
+    }
+}
+
+int main()
+{
+    int n = 0;
+    std::vector<int> v;
+    fun(v, 1000000);
+    while (std::cin >> n)
+    {
+        std::cout << n << " =";
+        std::vector<std::string> vc;
+        for (int i = 0; i < v.size() && v[i] <= n; i++)
+        {
+            while (n % v[i] == 0)
+            {
+                n /= v[i];
+                vc.push_back("*");
+                vc.push_back(std::to_string(v[i]));
+            }
+        }
+        for (size_t i = 1; i < vc.size(); i++)
+        {
+            std::cout << " "<< vc[i] ;
+        }
+        std::cout << std::endl;
+    }
+    return 0;
+}
