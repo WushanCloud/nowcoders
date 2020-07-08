@@ -1,0 +1,70 @@
+链接：https://www.nowcoder.com/questionTerminal/c0a4b917a15f40a49ca10532ab9019fb
+来源：牛客网
+
+NowCoder号称自己已经记住了1-100000之间所有的斐波那契数。
+为了考验他，我们随便出一个数n，让他说出第n个斐波那契数。当然，斐波那契数会很大。因此，如果第n个斐波那契数不到6位，则说出该数；否则只说出最后6位。
+
+输入描述:
+输入有多组数据。
+每组数据一行，包含一个整数n (1≤n≤100000)。
+
+
+输出描述:
+对应每一组输入，输出第n个斐波那契数的最后6位。
+示例1
+输入
+1<br/>2<br/>3<br/>4<br/>100000
+输出
+1<br/>2<br/>3<br/>5<br/>537501
+
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <cmath>
+#define N 6
+
+void add(std::string& s3, std::string s1, std::string s2, int& n)
+{
+    int len = std::max(s1.size(), s2.size()) + 1;
+    len = std::min(len, N);
+    s3.resize(len);
+    std::reverse(s1.begin(),s1.end());
+    std::reverse(s2.begin(),s2.end());
+    s1.resize(len, '0');
+    s2.resize(len, '0');
+    int tmp = 0;
+    for (int i = 0; i < len; i++)
+    {
+        tmp = s1[i] - '0' + s2[i] - '0' + tmp;
+        s3[i] = tmp % 10 + '0';
+        tmp /= 10;
+    }
+    if (n < 25 && s3.back() == '0')
+        s3.pop_back();
+    std::reverse(s3.begin(), s3.end());
+}
+
+int main()
+{
+    int n = 100000;
+    std::string s1 = "1";
+    std::string s2 = "2";
+    std::string s3;
+    std::vector<std::string> vs; 
+    vs.push_back(s1);
+    for (int i = 1; i < n; i++)
+    {
+        add(s3, s1, s2, i);
+        s1 = s2;
+        s2 = s3;
+        vs.push_back(s1);
+    }
+    while (std::cin >> n)
+    {
+        std::cout << vs[n-1] << std::endl;
+    }
+    return 0;
+}
+
