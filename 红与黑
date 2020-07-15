@@ -1,0 +1,97 @@
+链接：https://www.nowcoder.com/questionTerminal/5017fd2fc5c84f78bbaed4777996213a
+来源：牛客网
+
+有一间长方形的房子，地上铺了红色、黑色两种颜色的正方形瓷砖。你站在其中一块黑色的瓷砖上，只能向相邻的（上下左右四个方向）黑色瓷砖移动。请写一个程序，计算你总共能够到达多少块黑色的瓷砖。
+
+输入描述:
+输入包含多组数据。
+
+每组数据第一行是两个整数 m 和 n（1≤m, n≤20）。紧接着 m 行，每行包括 n 个字符。每个字符表示一块瓷砖的颜色，规则如下：
+
+1. “.”：黑色的瓷砖；
+2. “#”：白色的瓷砖；
+3. “@”：黑色的瓷砖，并且你站在这块瓷砖上。该字符在每个数据集合中唯一出现一次。
+
+
+输出描述:
+对应每组数据，输出总共能够到达多少块黑色的瓷砖。
+示例1
+输入
+9 6<br/>....#.<br/>.....#<br/>......<br/>......<br/>......<br/>......<br/>......<br/>#@...#<br/>.#..#.
+输出
+45
+
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void fun(vector<vector<int>>& vv, int& sum, int r, int c, const int& rol, const int& col)
+{
+	//判断当前位置是否可走
+	//判断越界
+	if (r < 0 || r >= rol || c < 0 || c >= col)
+	{
+		return;
+	}
+	// 判断是否走过
+	if (vv[r][c] == 1)
+	{
+		return;
+	}
+	//判断是否可走
+	if (vv[r][c] == -1)
+	{
+		return;
+	}
+	// 走当前位置
+	if (vv[r][c] == 0)
+	{
+		vv[r][c] = 1;
+		sum++;
+	}
+	//上下左右走
+	//上
+	fun(vv, sum, r - 1, c, rol, col);
+	//下
+	fun(vv, sum, r + 1, c, rol, col);
+	//左
+	fun(vv, sum, r, c - 1, rol, col);
+	//右
+	fun(vv, sum, r, c + 1, rol, col);
+}
+
+
+int main()
+{
+	int rol = 0;	// 行
+	int col = 0;	// 列
+	while (cin >> rol >> col)
+	{
+		char ch;
+		int r = 0, c = 0;
+		vector<vector<int>> vv(rol);
+		for (size_t i = 0; i < rol; i++)
+		{
+			vv[i].resize(col);
+			for (size_t j = 0; j < col; j++)
+			{
+				cin >> ch;
+				if (ch == '.')		// 黑
+					vv[i][j] = 0;
+				else if (ch == '#')	// 白
+					vv[i][j] = -1;
+				else				// 初始位置
+				{
+					vv[i][j] = 0;
+					r = i;
+					c = j;
+				}
+			}
+		}
+		int sum = 0;
+		fun(vv, sum, r, c, rol, col);
+		cout << sum << endl;
+	}
+	return 0;
+}
