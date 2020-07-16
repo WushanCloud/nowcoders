@@ -1,0 +1,66 @@
+题目描述
+求字典序在s1和s2之间的，长度在len1到len2的字符串的个数，结果mod 1000007。
+
+输入描述:
+每组数据包涵s1（长度小于100），s2（长度小于100），len1（小于100000），len2（大于len1，小于100000）
+输出描述:
+输出答案。
+示例1
+输入
+复制
+ab ce 1 2
+输出
+复制
+56
+
+#include<iostream>
+#include<string>
+#include<math.h>
+using namespace std;
+int main()
+{
+    string str1, str2;
+    int len1, len2;
+    while (cin >> str1 >> str2 >> len1 >> len2)
+    {
+        if (str1.length() < len2)
+            str1.append(len2 - str1.length(), 'a' - 1);
+        if (str2.length() < len2)
+            str2.append(len2 - str2.length(), 'z' + 1);
+        long long sum = 0;
+        int k = 0;
+        //第一步，找第一个相对位置不相等的位置下标
+        while (str1[k] == str2[k])
+        {
+            k++;
+        }
+        if (str1[k] < str2[k] && len1 <= len2)
+        {
+            //第二步，计算str[k]>str1[k] && str[k]<str2[k]的情况
+            for (int i = len1 - 1; i < len2; i++)
+            {
+                if (i == k)
+                {
+                    if (k == len1 - 1 && k == len2 - 1)
+                        sum += str2[k] - str1[k] - 1;
+                    else
+                        sum += str2[k] - str1[k];
+                }
+                else
+                    sum += (str2[k] - str1[k] - 1) * pow(26, i - k);
+            }
+            k++;
+            //第三步，计算str[k]==str1[k]时的情况和str[k]==str2[k]的情况
+            for (int i = len1; i <= len2; i++)
+            {
+                for (int j = k; j < i; j++)
+                    sum += ('z' - str1[j]) * pow(26, i - j - 1);
+                for (int j = k; j < i; j++)
+                    sum += (str2[j] - 'a') * pow(26, i - j - 1);
+            }
+        }
+        cout << sum << endl;
+    }
+    system("pause");
+    return 0;
+}
